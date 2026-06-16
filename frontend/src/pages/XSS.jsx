@@ -1,7 +1,13 @@
 function XSS() {
   return (
-    <div>
-      <h1>Cross-Site Scripting</h1>
+    <div className="page">
+      <section className="challenge-detail">
+        <h1>XSS</h1>
+        <p>Description</p>
+        <button type="button" className="button">
+          Start Challenge
+        </button>
+      </section>
     </div>
   );
 }

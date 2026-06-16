@@ -1,15 +1,29 @@
 const express = require("express");
 const cors = require("cors");
+const sqliRoutes = require("./routes/sqli");
+const xssRoutes = require("./routes/xss");
+const flagRoutes = require("./routes/flag");
 
 const app = express();
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req,res)=>{
-    res.json({
-        message:"COMP6841 CTF"
-    });
+app.get("/", (req, res) => {
+  res.json({
+    message: "COMP6841 CTF",
+  });
 });
 
-app.listen(3000);
+app.use("/api/sqli", sqliRoutes);
+app.use("/api/xss", xssRoutes);
+app.use("/api/flag", flagRoutes);
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`CTF backend running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

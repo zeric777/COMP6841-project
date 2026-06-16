@@ -1,7 +1,13 @@
 function Reverse() {
   return (
-    <div>
-      <h1>Reverse</h1>
+    <div className="page">
+      <section className="challenge-detail">
+        <h1>Reverse Engineering</h1>
+        <p>Description</p>
+        <button type="button" className="button">
+          Start Challenge
+        </button>
+      </section>
     </div>
   );
 }

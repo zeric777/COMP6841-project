@@ -1,7 +1,13 @@
 function FormatString() {
   return (
-    <div>
-      <h1>Buffer Overflow</h1>
+    <div className="page">
+      <section className="challenge-detail">
+        <h1>Format String</h1>
+        <p>Description</p>
+        <button type="button" className="button">
+          Start Challenge
+        </button>
+      </section>
     </div>
   );
 }
