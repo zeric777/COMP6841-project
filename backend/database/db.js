@@ -30,6 +30,15 @@ db.serialize(() => {
     )
   `);
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS comments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL,
+      content TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   const productCount = db.prepare("INSERT OR IGNORE INTO products (id, name, price) VALUES (?, ?, ?)");
   [
     [1, "Apple", "$1200"],
@@ -42,13 +51,32 @@ db.serialize(() => {
 
   const flagSeed = db.prepare("INSERT OR REPLACE INTO flags (challenge, flag) VALUES (?, ?)");
   [
-    [1, "FLAG{basic_union_sqli}"],
-    [2, "FLAG{filter_bypass}"],
-    [3, "FLAG{blind_sqli}"],
-    [4, "FLAG{admin_access}"],
-    [5, "FLAG{second_order}"],
+    [1, "COMP6841{K7mP2aQ9}"],
+    [2, "COMP6841{R8tW3xK5}"],
+    [3, "COMP6841{B6dH1sY4}"],
+    [4, "COMP6841{C9vJ2pL7}"],
+    [5, "COMP6841{M5qZ8nF3}"],
+    [101, "COMP6841{T4kR9wD2}"],
+    [102, "COMP6841{G7mX1cP8}"],
+    [103, "COMP6841{V3hN6sQ4}"],
+    [201, "COMP6841{A8yK5dL1}"],
+    [202, "COMP6841{P2rF7mW9}"],
+    [203, "COMP6841{J6uC3xH8}"],
+    [301, "COMP6841{Z4nB8qT1}"],
+    [302, "COMP6841{E7pL2vR5}"],
+    [303, "COMP6841{W9cM4kD6}"],
+    [304, "COMP6841{H3sX7aN2}"],
   ].forEach((flag) => flagSeed.run(flag));
   flagSeed.finalize();
+
+  const commentSeed = db.prepare(
+    "INSERT OR IGNORE INTO comments (id, username, content) VALUES (?, ?, ?)"
+  );
+  [
+    [1, "Tom", "Very useful."],
+    [2, "Eric", "Nice explanation."],
+  ].forEach((comment) => commentSeed.run(comment));
+  commentSeed.finalize();
 
   const userSeed = db.prepare(
     "INSERT OR IGNORE INTO users (id, username, password, role, bio) VALUES (?, ?, ?, ?, ?)"

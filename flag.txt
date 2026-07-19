@@ -1,0 +1,24 @@
+# CTF Flag Inventory
+
+SQL Injection
+SQLi-1 Product Search: COMP6841{K7mP2aQ9}
+SQLi-2 Advanced Search: COMP6841{R8tW3xK5}
+SQLi-3 User Directory: COMP6841{B6dH1sY4}
+SQLi-4 Admin Portal: COMP6841{C9vJ2pL7}
+SQLi-5 Employee Management: COMP6841{M5qZ8nF3}
+
+Cross-Site Scripting
+XSS-1 Forum Search: COMP6841{T4kR9wD2}
+XSS-2 Post Comments: COMP6841{G7mX1cP8}
+XSS-3 Live Profile: COMP6841{V3hN6sQ4}
+
+Buffer Overflow
+BOF-1 Employee Verification: COMP6841{A8yK5dL1}
+BOF-2 Binary Login: COMP6841{P2rF7mW9}
+BOF-3 Backup Server: COMP6841{J6uC3xH8}
+
+Format String
+FS-1 Echo Service: COMP6841{Z4nB8qT1}
+FS-2 Authentication Server: COMP6841{E7pL2vR5}
+FS-3 Admin Login: COMP6841{W9cM4kD6}
+FS-4 System Utility: COMP6841{H3sX7aN2}

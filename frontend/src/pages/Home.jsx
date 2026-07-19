@@ -21,11 +21,6 @@ const challenges = [
     path: "/format",
     description: "A binary exploitation challenge placeholder for formatted output topics.",
   },
-  {
-    name: "Reverse Engineering",
-    path: "/reverse",
-    description: "A reverse engineering challenge placeholder for program analysis topics.",
-  },
 ];
 
 function Home() {

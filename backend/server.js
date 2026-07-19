@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const sqliRoutes = require("./routes/sqli");
 const xssRoutes = require("./routes/xss");
+const bofRoutes = require("./routes/bof");
+const formatRoutes = require("./routes/format");
 const flagRoutes = require("./routes/flag");
 
 const app = express();
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/sqli", sqliRoutes);
 app.use("/api/xss", xssRoutes);
+app.use("/api/bof", bofRoutes);
+app.use("/api/format", formatRoutes);
 app.use("/api/flag", flagRoutes);
 
 if (require.main === module) {

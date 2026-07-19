@@ -11,10 +11,23 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   const { challenge, flag } = req.body;
+  const challengeValue = String(challenge || "").toLowerCase();
+  const xssMatch = challengeValue.match(/^xss-(\d+)$/);
+  const sqliMatch = challengeValue.match(/^sqli-(\d+)$/);
+  const bofMatch = challengeValue.match(/^bof-(\d+)$/);
+  const formatMatch = challengeValue.match(/^fs-(\d+)$/);
   const challengeNumber =
     typeof challenge === "number"
       ? challenge
-      : Number(String(challenge || "").replace("sqli-", ""));
+      : xssMatch
+        ? 100 + Number(xssMatch[1])
+        : sqliMatch
+          ? Number(sqliMatch[1])
+          : bofMatch
+            ? 200 + Number(bofMatch[1])
+            : formatMatch
+              ? 300 + Number(formatMatch[1])
+              : Number(challengeValue);
 
   if (!challengeNumber || !flag) {
     return res.status(400).json({

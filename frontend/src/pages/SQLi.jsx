@@ -401,7 +401,7 @@ function FlagSubmit({ challenge, onAccepted }) {
           id="flag-input"
           value={flag}
           onChange={(event) => setFlag(event.target.value)}
-          placeholder="FLAG{...}"
+          placeholder="COMP6841{...}"
         />
         <button type="submit" className="button">Submit</button>
       </form>
