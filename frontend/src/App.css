@@ -61,6 +61,11 @@
   text-decoration: none;
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .button:hover {
   filter: brightness(0.95);
 }
@@ -68,4 +73,202 @@
 .button:focus-visible {
   outline: 3px solid var(--accent-border);
   outline-offset: 2px;
+}
+
+.button.secondary {
+  background: var(--surface);
+  color: var(--text-h);
+}
+
+.text-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sqli-page {
+  gap: 24px;
+}
+
+.sqli-progress,
+.sqli-list-item,
+.challenge-hero,
+.sqli-section,
+.lab-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.sqli-progress,
+.challenge-hero,
+.sqli-section,
+.lab-panel {
+  padding: 24px;
+}
+
+.sqli-progress {
+  display: grid;
+  gap: 12px;
+}
+
+.sqli-progress > div:first-child,
+.section-title-row,
+.meta-row,
+.button-row,
+.result-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.progress-bar {
+  background: var(--border);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  background: var(--accent);
+  display: block;
+  height: 100%;
+}
+
+.sqli-list {
+  display: grid;
+  gap: 16px;
+}
+
+.sqli-list-item {
+  align-items: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr auto;
+  padding: 24px;
+}
+
+.challenge-status {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.challenge-hero h1 {
+  margin: 8px 0 16px;
+}
+
+.meta-row {
+  color: var(--text-h);
+  justify-content: flex-start;
+}
+
+.sqli-section {
+  display: grid;
+  gap: 16px;
+}
+
+.sqli-section h2,
+.lab-panel h2,
+.admin-panel h3,
+.profile-editor h3 {
+  margin: 0;
+}
+
+.hint-list {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.lab-form {
+  display: grid;
+  gap: 10px;
+  max-width: 520px;
+}
+
+.lab-form input,
+.profile-editor textarea {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: var(--text-h);
+  font: inherit;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.profile-editor textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.lab-message {
+  color: var(--text-h);
+  margin-top: 16px;
+}
+
+.success-message {
+  color: var(--success);
+  font-weight: 700;
+}
+
+.result-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  max-width: 520px;
+}
+
+.result-row {
+  border-bottom: 1px solid var(--border);
+  color: var(--text-h);
+  padding: 10px 0;
+}
+
+.login-panel,
+.employee-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.admin-panel,
+.profile-editor,
+.csv-output {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  padding: 16px;
+}
+
+.csv-output {
+  color: var(--text-h);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 720px) {
+  .sqli-list-item,
+  .sqli-progress > div:first-child,
+  .section-title-row,
+  .meta-row,
+  .button-row {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .challenge-status {
+    align-items: flex-start;
+  }
 }

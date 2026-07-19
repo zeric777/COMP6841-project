@@ -13,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sqli" element={<SQLi />} />
+        <Route path="/sqli/:challengeId" element={<SQLi />} />
         <Route path="/xss" element={<XSS />} />
         <Route path="/buffer" element={<BufferOverflow />} />
         <Route path="/format" element={<FormatString />} />
