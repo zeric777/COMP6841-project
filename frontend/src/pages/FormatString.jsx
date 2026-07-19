@@ -182,7 +182,6 @@ function FormatString() {
     return (
       <div className="page sqli-page">
         <header className="page-header">
-          <Link className="text-link" to="/">Home</Link>
           <h1>Format String Challenges</h1>
           <p>Learn format string exploitation through 4 progressive 32-bit Linux exercises.</p>
         </header>

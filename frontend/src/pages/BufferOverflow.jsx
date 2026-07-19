@@ -171,7 +171,6 @@ function BufferOverflow() {
     return (
       <div className="page sqli-page">
         <header className="page-header">
-          <Link className="text-link" to="/">Home</Link>
           <h1>Buffer Overflow Challenges</h1>
           <p>Learn stack-based binary exploitation through 3 progressive Linux exercises.</p>
         </header>

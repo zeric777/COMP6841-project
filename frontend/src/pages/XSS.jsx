@@ -317,7 +317,6 @@ function XSS() {
     return (
       <div className="page sqli-page">
         <header className="page-header">
-          <Link className="text-link" to="/">Home</Link>
           <h1>Cross-Site Scripting Challenges</h1>
           <p>Learn XSS through 3 progressive exercises in one fictional forum platform.</p>
         </header>

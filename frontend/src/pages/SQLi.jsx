@@ -453,7 +453,6 @@ function SQLi() {
     return (
       <div className="page sqli-page">
         <header className="page-header">
-          <Link className="text-link" to="/">Home</Link>
           <h1>SQL Injection Challenges</h1>
           <p>Learn SQL Injection through 5 progressive exercises inside one fictional company website.</p>
         </header>
