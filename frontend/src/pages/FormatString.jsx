@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useMemo, useState } from "react";
+import SolutionGuide from "../components/SolutionGuide";
+import { formatSolutions } from "../data/challengeSolutions";
 
 const API_BASE = "http://localhost:3000/api";
 
@@ -121,10 +123,10 @@ function BinaryLab({ challenge }) {
   );
 }
 
-function FlagSubmit({ challenge, onAccepted }) {
+function FlagSubmit({ challenge, isCompleted, onAccepted, solution }) {
   const [flag, setFlag] = useState("");
   const [message, setMessage] = useState("");
-  const [accepted, setAccepted] = useState(false);
+  const [accepted, setAccepted] = useState(isCompleted);
 
   const submitFlag = async (event) => {
     event.preventDefault();
@@ -137,7 +139,7 @@ function FlagSubmit({ challenge, onAccepted }) {
     const data = await response.json();
 
     if (!response.ok) {
-      setAccepted(false);
+      setAccepted(isCompleted);
       setMessage(data.message || "Incorrect flag.");
       return;
     }
@@ -148,16 +150,23 @@ function FlagSubmit({ challenge, onAccepted }) {
   };
 
   return (
-    <section className="sqli-section">
-      <h2>Submit Flag</h2>
-      <form className="lab-form flag-form" onSubmit={submitFlag}>
-        <label htmlFor="format-flag-input">Flag</label>
-        <input id="format-flag-input" value={flag} onChange={(event) => setFlag(event.target.value)} placeholder="COMP6841{...}" />
-        <button type="submit" className="button">Submit</button>
-      </form>
-      {message && <p className={accepted ? "success-message" : "lab-message"}>{message}</p>}
-      {accepted && challenge.id < challenges.length && <Link className="button" to={`/format/${challenge.id + 1}`}>Unlock FS-{challenge.id + 1}</Link>}
-    </section>
+    <>
+      <section className="sqli-section">
+        <h2>Submit Flag</h2>
+        <form className="lab-form flag-form" onSubmit={submitFlag}>
+          <label htmlFor="format-flag-input">Flag</label>
+          <input id="format-flag-input" value={flag} onChange={(event) => setFlag(event.target.value)} placeholder="COMP6841{...}" />
+          <button type="submit" className="button">Submit</button>
+        </form>
+        {message && <p className={accepted ? "success-message" : "lab-message"}>{message}</p>}
+      </section>
+      {accepted && <SolutionGuide solution={solution} />}
+      {accepted && challenge.id < challenges.length && (
+        <div className="solution-actions">
+          <Link className="button" to={`/format/${challenge.id + 1}`}>Unlock FS-{challenge.id + 1}</Link>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -224,7 +233,13 @@ function FormatString() {
       <section className="sqli-section"><h2>Goal</h2><p>{selectedChallenge.goal}</p></section>
       <HintPanel hints={selectedChallenge.hints} />
       <section className="sqli-section"><h2>Challenge</h2><BinaryLab challenge={selectedChallenge} /></section>
-      <FlagSubmit challenge={selectedChallenge} onAccepted={completeChallenge} />
+      <FlagSubmit
+        key={`format-flag-${selectedChallenge.id}`}
+        challenge={selectedChallenge}
+        isCompleted={completed.includes(selectedChallenge.id)}
+        onAccepted={completeChallenge}
+        solution={formatSolutions[selectedChallenge.id]}
+      />
       <section className="sqli-section"><h2>Learning Objective</h2><p>{selectedChallenge.learningObjective}</p></section>
     </div>
   );
